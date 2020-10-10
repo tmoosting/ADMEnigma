@@ -72,6 +72,7 @@ void RLECoder::encodeInt8(string fileName) {
 		outputString += "*";
 		outputString += to_string(vectorInt8[i]);
 		outputString += "+";
+		// TODO : remove trailing +
 	}
 
 	string newFileName = fileName;

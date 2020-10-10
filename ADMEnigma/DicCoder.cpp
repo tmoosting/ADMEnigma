@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream> 
 #include <vector>
+#include <map>
 
 using namespace std;
  
@@ -51,16 +52,42 @@ void DicCoder::processArguments(string opType, string dataType, string fileName)
 
 void DicCoder::encodeInt8(string fileName) {
 	vector<__int8> vectorInt8 = csvReader.readInt8(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+ 
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt8.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt8[0]), sizeof(__int8) * vectorInt8.size());
+//dictionary: map of string to CodeType
+//S : empty string
+//c : byte
+//DF : the data file
+//EF : the encoded file
 
-	cout << "Encoded " << fileName << "with data type int8 into uncompressed binary format. Output file: " << binFileName;
+
+	string checkString;
+	map<__int8, __int8> intMap;
+
+	// Iterate through all members and add each new smallest-possible-combination to dict 
+
+//	while (  )
+//{
+//	checkString = S + c       // append c to S
+//
+//		if (dictionary doesn't contain S )
+//		{
+//			dictionary[S] = next unused code
+//				// if the dictionary had entries for codes 0 to 17,
+//				// this would add an entry for code 18, with the key S
+//
+//				S = S - $   // remove last byte from S
+//				write dictionary[S] to EF
+//				S = c       // S now contains only c
+//		}
+//}
+//
+//	if (S isn't empty )
+//	write dictionary[S] to EF
+
+
+	//writing to file: put key/values at the top, define length, when decoding use keys at start
+
 }
 void DicCoder::encodeInt16(string fileName)
 {

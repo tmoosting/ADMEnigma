@@ -50,117 +50,190 @@ void DifCoder::processArguments(string opType, string dataType, string fileName)
 
 
 void DifCoder::encodeInt8(string fileName) {
-	vector<__int8> vectorInt8 = csvReader.readInt8(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt8.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt8[0]), sizeof(__int8) * vectorInt8.size());
+	vector<__int8> vectorInt = csvReader.readInt8(fileName); 
+	string outputString;
 
-	cout << "Encoded " << fileName << "with data type int8 into uncompressed binary format. Output file: " << binFileName;
+	int n = vectorInt.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
+
+	outputString += to_string(vectorInt[0]);
+	outputString += ",";
+
+	for (size_t i = 1; i < vectorInt.size(); i++)
+	{
+		outputString += to_string(vectorInt[i ] - vectorInt[i - 1]);
+		outputString += ","; 
+	} 
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".dif";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int8 into differential encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 void DifCoder::encodeInt16(string fileName)
 {
-	vector<__int16> vectorInt16 = csvReader.readInt16(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int16> vectorInt = csvReader.readInt16(fileName);
+	string outputString;
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt16.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt16[0]), sizeof(__int16) * vectorInt16.size());
+	int n = vectorInt.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
 
-	cout << "Encoded " << fileName << "with data type int16 into uncompressed binary format. Output file: " << binFileName;
+	outputString += to_string(vectorInt[0]);
+	outputString += ",";
+
+	for (size_t i = 1; i < vectorInt.size(); i++)
+	{
+		outputString += to_string(vectorInt[i] - vectorInt[i - 1]);
+		outputString += ",";
+	}
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".dif";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int16 into differential encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 void DifCoder::encodeInt32(string fileName)
 {
-	vector<__int32> vectorInt32 = csvReader.readInt32(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int32> vectorInt = csvReader.readInt32(fileName);
+	string outputString;
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt32.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt32[0]), sizeof(__int32) * vectorInt32.size());
+	int n = vectorInt.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
 
-	cout << "Encoded " << fileName << "with data type int32 into uncompressed binary format. Output file: " << binFileName;
+	outputString += to_string(vectorInt[0]);
+	outputString += ",";
+
+	for (size_t i = 1; i < vectorInt.size(); i++)
+	{
+		outputString += to_string(vectorInt[i] - vectorInt[i - 1]);
+		outputString += ",";
+	}
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".dif";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int32 into differential encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 void DifCoder::encodeInt64(string fileName)
 {
-	vector<__int64> vectorInt64 = csvReader.readInt64(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int64> vectorInt = csvReader.readInt64(fileName);
+	string outputString;
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt64.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt64[0]), sizeof(__int64) * vectorInt64.size());
+	int n = vectorInt.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
 
-	cout << "Encoded " << fileName << "with data type int64 into uncompressed binary format. Output file: " << binFileName;
+	outputString += to_string(vectorInt[0]);
+	outputString += ",";
+
+	for (size_t i = 1; i < vectorInt.size(); i++)
+	{
+		outputString += to_string(vectorInt[i] - vectorInt[i - 1]);
+		outputString += ",";
+	}
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".dif";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int64 into differential encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 
 void DifCoder::decodeInt8(string fileName)
 {
-	vector<__int8> int8Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int8Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int8Vector[0]), sizeof(__int8) * int8Vector.size());
+	vector<__int8> vectorInt; 
+	ifstream file(fileName);
+	string line; 
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int8Vector[i] << "\n";
+	while (getline(file, line, ','))
+		vectorInt.push_back((__int8)stoi(line)); 
+
+	for (size_t i = 1; i < vectorInt.size(); i++) 
+		vectorInt[i] = vectorInt[i - 1] + vectorInt[i];  
+
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
+		cout << (int)vectorInt[i] << "\n";
 }
 void DifCoder::decodeInt16(string fileName)
 {
-	vector<__int16> int16Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int16Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int16Vector[0]), sizeof(__int16) * int16Vector.size());
+	vector<__int16> vectorInt;
+	ifstream file(fileName);
+	string line;
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int16Vector[i] << "\n";
+	while (getline(file, line, ','))
+		vectorInt.push_back((__int16)stoi(line));
+
+	for (size_t i = 1; i < vectorInt.size(); i++)
+		vectorInt[i] = vectorInt[i - 1] + vectorInt[i];
+
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
+		cout << (int)vectorInt[i] << "\n";
 }
 
 void DifCoder::decodeInt32(string fileName)
 {
-	vector<__int32> int32Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int32Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int32Vector[0]), sizeof(__int32) * int32Vector.size());
+	vector<__int32> vectorInt;
+	ifstream file(fileName);
+	string line;
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int32Vector[i] << "\n";
+	while (getline(file, line, ','))
+		vectorInt.push_back((__int32)stoi(line));
+
+	for (size_t i = 1; i < vectorInt.size(); i++)
+		vectorInt[i] = vectorInt[i - 1] + vectorInt[i];
+
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
+		cout << (int)vectorInt[i] << "\n";
 }
 
 void DifCoder::decodeInt64(string fileName)
 {
-	vector<__int64> int64Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int64Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int64Vector[0]), sizeof(__int64) * int64Vector.size());
+	vector<__int64> vectorInt;
+	ifstream file(fileName);
+	string line;
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int64Vector[i] << "\n";
+	while (getline(file, line, ','))
+		vectorInt.push_back((__int64)stoi(line));
+
+	for (size_t i = 1; i < vectorInt.size(); i++)
+		vectorInt[i] = vectorInt[i - 1] + vectorInt[i];
+
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
+		cout << (int)vectorInt[i] << "\n";
 }
 
 

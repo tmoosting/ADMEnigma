@@ -46,121 +46,229 @@ void FORCoder::processArguments(string opType, string dataType, string fileName)
 
 
 
-
-
-
 void FORCoder::encodeInt8(string fileName) {
-	vector<__int8> vectorInt8 = csvReader.readInt8(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int8> medianVector = csvReader.readInt8(fileName);
+	int m = medianVector.size() / 2;
+	nth_element(medianVector.begin(), medianVector.begin() + m, medianVector.end());
+	__int8 median = medianVector[m]; 
+	vector<__int8> vectorInt = csvReader.readInt8(fileName); 
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt8.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt8[0]), sizeof(__int8) * vectorInt8.size());
+	string outputString; 
+	outputString += to_string(median); 
+	outputString += ","; 
 
-	cout << "Encoded " << fileName << "with data type int8 into uncompressed binary format. Output file: " << binFileName;
+	int n = vectorInt.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
+
+	for (auto& element : vectorInt) {
+		element -= median;
+		outputString += to_string(element);
+		outputString += ",";
+	} 
+
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".for";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int8 into frame of reference encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 void FORCoder::encodeInt16(string fileName)
 {
-	vector<__int16> vectorInt16 = csvReader.readInt16(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int16> medianVector = csvReader.readInt16(fileName);
+	int m = medianVector.size() / 2;
+	nth_element(medianVector.begin(), medianVector.begin() + m, medianVector.end());
+	__int16 median = medianVector[m];
+	vector<__int16> vectorInt = csvReader.readInt16(fileName);
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt16.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt16[0]), sizeof(__int16) * vectorInt16.size());
+	string outputString;
+	outputString += to_string(median);
+	outputString += ",";
 
-	cout << "Encoded " << fileName << "with data type int16 into uncompressed binary format. Output file: " << binFileName;
+	int n = vectorInt.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
+
+	for (auto& element : vectorInt) {
+		element -= median;
+		outputString += to_string(element);
+		outputString += ",";
+	}
+
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".for";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int16 into frame of reference encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 void FORCoder::encodeInt32(string fileName)
 {
-	vector<__int32> vectorInt32 = csvReader.readInt32(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int32> medianVector = csvReader.readInt32(fileName);
+	int m = medianVector.size() / 2;
+	nth_element(medianVector.begin(), medianVector.begin() + m, medianVector.end());
+	__int32 median = medianVector[m];
+	vector<__int32> vectorInt = csvReader.readInt32(fileName);
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt32.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt32[0]), sizeof(__int32) * vectorInt32.size());
+	string outputString;
+	outputString += to_string(median);
+	outputString += ",";
 
-	cout << "Encoded " << fileName << "with data type int32 into uncompressed binary format. Output file: " << binFileName;
+	int n = vectorInt.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
+
+	for (auto& element : vectorInt) {
+		element -= median;
+		outputString += to_string(element);
+		outputString += ",";
+	}
+
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".for";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int32 into frame of reference encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 void FORCoder::encodeInt64(string fileName)
 {
-	vector<__int64> vectorInt64 = csvReader.readInt64(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int64> medianVector = csvReader.readInt64(fileName);
+	int m = medianVector.size() / 2;
+	nth_element(medianVector.begin(), medianVector.begin() + m, medianVector.end());
+	__int64 median = medianVector[m];
+	vector<__int64> vectorInt = csvReader.readInt64(fileName);
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt64.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt64[0]), sizeof(__int64) * vectorInt64.size());
+	string outputString;
+	outputString += to_string(median);
+	outputString += ",";
 
-	cout << "Encoded " << fileName << "with data type int64 into uncompressed binary format. Output file: " << binFileName;
+	int n = vectorInt.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
+
+	for (auto& element : vectorInt) {
+		element -= median;
+		outputString += to_string(element);
+		outputString += ",";
+	}
+
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".for";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int64 into frame of reference encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 
 void FORCoder::decodeInt8(string fileName)
 {
-	vector<__int8> int8Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int8Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int8Vector[0]), sizeof(__int8) * int8Vector.size());
+	vector<__int8> vectorInt;
+	ifstream file(fileName);  
+	string line;  
+	__int8 median;
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int8Vector[i] << "\n";
+	while (getline(file, line, ','))	
+		vectorInt.push_back((__int8)stoi(line)); 
+
+	median = vectorInt[0];
+ 
+
+	for (auto& element : vectorInt)
+		element += median;
+	
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 1; i < 21; i++)
+		cout << (int)vectorInt[i] << "\n";
 }
 void FORCoder::decodeInt16(string fileName)
 {
-	vector<__int16> int16Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int16Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int16Vector[0]), sizeof(__int16) * int16Vector.size());
+	vector<__int16> vectorInt;
+	ifstream file(fileName);
+	string line;
+	__int16 median;
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int16Vector[i] << "\n";
+	while (getline(file, line, ','))
+		vectorInt.push_back((__int16)stoi(line));
+
+	median = vectorInt[0];
+
+ 
+
+	for (auto& element : vectorInt)
+		element += median;
+
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 1; i < 21; i++)
+		cout << (int)vectorInt[i] << "\n";
 }
 
 void FORCoder::decodeInt32(string fileName)
 {
-	vector<__int32> int32Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int32Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int32Vector[0]), sizeof(__int32) * int32Vector.size());
+	vector<__int32> vectorInt;
+	ifstream file(fileName);
+	string line;
+	__int32 median;
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int32Vector[i] << "\n";
+	while (getline(file, line, ','))
+		vectorInt.push_back((__int32)stoi(line));
+
+	median = vectorInt[0];
+
+ 
+
+	for (auto& element : vectorInt)
+		element += median;
+
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 1; i < 21; i++)
+		cout << (int)vectorInt[i] << "\n";
 }
 
 void FORCoder::decodeInt64(string fileName)
 {
-	vector<__int64> int64Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int64Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int64Vector[0]), sizeof(__int64) * int64Vector.size());
+	vector<__int64> vectorInt;
+	ifstream file(fileName);
+	string line;
+	__int64 median;
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int64Vector[i] << "\n";
+	while (getline(file, line, ','))
+		vectorInt.push_back((__int64)stoi(line));
+
+	median = vectorInt[0];
+
+ 
+
+	for (auto& element : vectorInt)
+		element += median;
+
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 1; i < 21; i++)
+		cout << (int)vectorInt[i] << "\n";
 }
 
 
