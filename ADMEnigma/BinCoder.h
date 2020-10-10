@@ -17,5 +17,15 @@ public:
 
 	void processArguments(string opType, string dataType, string fileName);
 
+	void encodeInt8(vector<__int8> vectorInt8);
+
+	void encodeInt(string dataType, string fileName);
+
+	void decodeInt(string dataType, string fileName);
+
+	void encodeString(string fileName);
+
+	void decodeString(string fileName);
+
 };
 

@@ -141,9 +141,13 @@
   <ItemGroup>
     <ClCompile Include="ADMEnigma.cpp" />
     <ClCompile Include="BinCoder.cpp" />
+    <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="CSVWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinCoder.h" />
+    <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="CSVWriter.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Text.txt" />

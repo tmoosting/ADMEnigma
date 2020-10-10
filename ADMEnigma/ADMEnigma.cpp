@@ -2,13 +2,15 @@
 //
 
 #include "BinCoder.h"
+#include "CSVReader.h"
+#include "CSVWriter.h"
 #include <iostream>
 #include <algorithm>
 #include <string>
 #include <fstream> 
 #include <vector>
 
-using namespace std;
+using namespace std; 
 
 string validateArguments(int argc, char** argv);
 void processArguments(int argc, char** argv);
