@@ -35,7 +35,7 @@ void BinCoder::encodeInt(string dataType, string fileName) {
 
 	if (dataType == "INT8") {
 		vectorInt8 = csvReader.readInt8(fileName);
-		encodeInt8(vectorInt8);
+		encodeInt8(vectorInt8, fileName);
 	}
 	else 	if (dataType == "INT16") {
 		vectorInt16 = csvReader.readInt16(fileName);
@@ -62,14 +62,44 @@ void BinCoder::decodeInt(string dataType, string fileName) {
 
 void BinCoder::encodeString(string fileName) {
 	vector<string> vectorString = csvReader.readString(fileName); 
+
+	string newFileName = fileName; 
+
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".bin";
+
+	ofstream file(newFileName, ios::binary); 
+	int a = vectorString.size();
+	cout << a;
+	cout << vectorString[0];
+	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
+	file.write(reinterpret_cast<const char*>(&vectorString[0]), sizeof(string) * vectorString.size());
+ 
+
 }
 void BinCoder::decodeString(string fileName) {
-	vector<string> tester = csvReader.readString(fileName); 
+	vector<string> tester;
+
+	ifstream file(fileName, ios::binary);
+	int a;
+	file.read(reinterpret_cast<char*>(&a), sizeof(a)); 
+	tester.resize(a);
+	file.read(reinterpret_cast<char*>(&tester[0]), sizeof(string) * tester.size());
+	 
+	cout << tester.size();
+	cout << tester[0];
+	cout << tester[1];
+	cout << tester[2];
+	 
 }
 
 
-void BinCoder::encodeInt8(vector<__int8> vectorInt8) {
+void BinCoder::encodeInt8(vector<__int8> vectorInt8, string fileName) {
+
 
 }
+
+ 
+
 
  
