@@ -18,9 +18,9 @@ void processArguments(int argc, char** argv);
 BinCoder binCoder;
 
  
-// ENUMS
-enum   operationtype { encode, decode } operationType;
-enum   compressiontype { bin, rle, dic, fror, dif }compressionType;
+//// ENUMS
+//enum   operationtype { encode, decode } operationType;
+//enum   compressiontype { bin, rle, dic, fror, dif }compressionType;
 
 int main(int argc, char** argv)
 {
@@ -31,15 +31,17 @@ int main(int argc, char** argv)
         cout << validString << "\n";    
     else 
         processArguments(argc, argv); 
+
+    // TODO: out message
 } 
 
 void processArguments(int argc, char** argv)
 {
-    string codeOption = argv[1];
+    string operationType = argv[1];
     string compression = argv[2];
     string dataType = argv[3];
     string fileName = argv[4]; 
-    transform(codeOption.begin(), codeOption.end(), codeOption.begin(), ::toupper);
+    transform(operationType.begin(), operationType.end(), operationType.begin(), ::toupper);
     transform(compression.begin(), compression.end(), compression.begin(), ::toupper);
     transform(dataType.begin(), dataType.end(), dataType.begin(), ::toupper);
     transform(fileName.begin(), fileName.end(), fileName.begin(), ::toupper);
@@ -47,9 +49,20 @@ void processArguments(int argc, char** argv)
 
     //  if (compression != "BIN" && compression != "RLE" && compression != "DIC" && compression !=  "FOR" && compression != "DIF")
     if (compression == "BIN") {
-        if ()
+        binCoder.processArguments(operationType, dataType, fileName);
     }
-
+    if (compression == "RLE") {
+     //   binCoder.processArguments(operationType, dataType, fileName);
+    }
+    if (compression == "DIC") {
+    //    binCoder.processArguments(operationType, dataType, fileName);
+    }
+    if (compression == "FOR") {
+    //    binCoder.processArguments(operationType, dataType, fileName);
+    }
+    if (compression == "DIF") {
+    //    binCoder.processArguments(operationType, dataType, fileName);
+    }
     // std::cout << codeOption << "  " << compression << dataType << fileName << "\n";
 }
  
@@ -60,20 +73,20 @@ string validateArguments(int argc, char** argv)
     if (argc != 5)
         return "Invalid count: # of arguments should be 4, not " +to_string (argc - 1);
 
-    string codeOption = argv[1];
+    string operationType = argv[1];
     string compression = argv[2];
     string dataType = argv[3];
     string fileName = argv[4];
 
     // Make uppercase for easier comparison
-    transform(codeOption.begin(), codeOption.end(), codeOption.begin(), ::toupper);
+    transform(operationType.begin(), operationType.end(), operationType.begin(), ::toupper);
     transform(compression.begin(), compression.end(), compression.begin(), ::toupper);
     transform(dataType.begin(), dataType.end(), dataType.begin(), ::toupper);
     transform(fileName.begin(), fileName.end(), fileName.begin(), ::toupper);
 
     // validate operation type
-    if (codeOption != "EN" && codeOption != "DE")
-        return "Invalid operation type: " + codeOption;  
+    if (operationType != "EN" && operationType != "DE")
+        return "Invalid operation type: " + operationType;  
 
     // validate compression
     if (compression != "BIN" && compression != "RLE" && compression != "DIC" && compression !=  "FOR" && compression != "DIF")

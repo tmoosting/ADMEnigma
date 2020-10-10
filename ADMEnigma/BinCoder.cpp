@@ -8,7 +8,7 @@
 using namespace std;
 
 
-void BinCoder::encodeBinStyle()
+void BinCoder::processArguments(string opType, string dataType, string fileName)
 {
 	cout <<  "you've been bun styled \n";
 	 
