@@ -13,7 +13,7 @@ void DicCoder::processArguments(string opType, string dataType, string fileName)
 {
 	if (opType == "EN") {
 		if (dataType == "STRING") {
-			//encodeString(fileName); 
+			encodeString(fileName); 
 		}
 		else {
 			if (dataType == "INT8")
@@ -28,7 +28,7 @@ void DicCoder::processArguments(string opType, string dataType, string fileName)
 	}
 	else 	if (opType == "DE") {
 		if (dataType == "STRING") {
-			//	decodeString(fileName);
+			 decodeString(fileName);
 		}
 		else {
 			if (dataType == "INT8")

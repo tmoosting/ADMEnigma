@@ -5,8 +5,10 @@
 #include <string>
 #include <fstream> 
 #include <vector>
+ 
+ 
 
-using namespace std;
+using namespace std; 
 
 
 
@@ -14,7 +16,7 @@ void RLECoder::processArguments(string opType, string dataType, string fileName)
 {
 	if (opType == "EN") {
 		if (dataType == "STRING") {
-			//encodeString(fileName); 
+			encodeString(fileName); 
 		}
 		else {
 			if (dataType == "INT8")
@@ -29,7 +31,7 @@ void RLECoder::processArguments(string opType, string dataType, string fileName)
 	}
 	else 	if (opType == "DE") {
 		if (dataType == "STRING") {
-			//	decodeString(fileName);
+				decodeString(fileName);
 		}
 		else {
 			if (dataType == "INT8")
@@ -50,152 +52,316 @@ void RLECoder::processArguments(string opType, string dataType, string fileName)
 
 
 
-void RLECoder::encodeInt8(string fileName) {
+void RLECoder::encodeInt8(string fileName) { 
 	vector<__int8> vectorInt8 = csvReader.readInt8(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	 
+	string outputString;
+	int n = vectorInt8.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt8.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt8[0]), sizeof(__int8) * vectorInt8.size());
+	for (int i = 0; i < n; i++)
+	{
+		int count = 1;
+		while (vectorInt8[i] == vectorInt8[i + 1]) {
+			count++;
+			i++;
+		}
+		//TODO: Skip add if next is not same. Then also in decoder
+		outputString += to_string(count);
+		outputString += "*";
+		outputString += to_string(vectorInt8[i]);
+		outputString += "+";
+	}
 
-	cout << "Encoded " << fileName << "with data type int8 into uncompressed binary format. Output file: " << binFileName;
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".rle";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close(); 
+	cout << "Encoded " << fileName << "with data type int8 into run length encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 void RLECoder::encodeInt16(string fileName)
 {
-	vector<__int16> vectorInt16 = csvReader.readInt16(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int16> vectorInt16 = csvReader.readInt16(fileName); 
+	string outputString;
+	int n = vectorInt16.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt16.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt16[0]), sizeof(__int16) * vectorInt16.size());
+	for (int i = 0; i < n; i++)
+	{
+		int count = 1;
+		while (vectorInt16[i] == vectorInt16[i + 1]) {
+			count++;
+			i++;
+		}
+		outputString += to_string(count);
+		outputString += "*";
+		outputString += to_string(vectorInt16[i]);
+		outputString += "+";
+	}
 
-	cout << "Encoded " << fileName << "with data type int16 into uncompressed binary format. Output file: " << binFileName;
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".rle";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int16 into run length encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 void RLECoder::encodeInt32(string fileName)
 {
 	vector<__int32> vectorInt32 = csvReader.readInt32(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	string outputString;
+	int n = vectorInt32.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt32.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt32[0]), sizeof(__int32) * vectorInt32.size());
+	for (int i = 0; i < n; i++)
+	{
+		int count = 1;
+		while (vectorInt32[i] == vectorInt32[i + 1]) {
+			count++;
+			i++;
+		}
+		outputString += to_string(count);
+		outputString += "*";
+		outputString += to_string(vectorInt32[i]);
+		outputString += "+";
+	}
 
-	cout << "Encoded " << fileName << "with data type int32 into uncompressed binary format. Output file: " << binFileName;
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".rle";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int32 into run length encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 void RLECoder::encodeInt64(string fileName)
 {
 	vector<__int64> vectorInt64 = csvReader.readInt64(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	string outputString;
+	int n = vectorInt64.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt64.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt64[0]), sizeof(__int64) * vectorInt64.size());
+	for (int i = 0; i < n; i++)
+	{
+		int count = 1;
+		while (vectorInt64[i] == vectorInt64[i + 1]) {
+			count++;
+			i++;
+		}
+		outputString += to_string(count);
+		outputString += "*";
+		outputString += to_string(vectorInt64[i]);
+		outputString += "+";
+	}
 
-	cout << "Encoded " << fileName << "with data type int64 into uncompressed binary format. Output file: " << binFileName;
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".rle";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int64 into run length encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 
 void RLECoder::decodeInt8(string fileName)
 {
-	vector<__int8> int8Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int8Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int8Vector[0]), sizeof(__int8) * int8Vector.size());
+	vector<__int8> int8Vector; 
+	ifstream file(fileName); // the file that is youknow
+	string line;// each string up to a +: so is a number, then *, then the content
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
+	while (getline(file, line, '+'))
+	{
+		//TODO :Add exception 
+		string segment;
+		stringstream linestream(line);
+		vector<string> seglist;
+
+		while (getline(linestream, segment, '*')) {
+			seglist.push_back(segment);
+		}
+
+		for (size_t i = 0; i < stoi(seglist[0]); i++) {
+			int8Vector.push_back(  (__int8)stoi(seglist[1])   );
+		} 
+	}
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
 		cout << (int)int8Vector[i] << "\n";
 }
 void RLECoder::decodeInt16(string fileName)
 {
 	vector<__int16> int16Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int16Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int16Vector[0]), sizeof(__int16) * int16Vector.size());
+	ifstream file(fileName);  
+	string line; 
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
+	while (getline(file, line, '+'))
+	{ 
+		string segment;
+		stringstream linestream(line);
+		vector<string> seglist;
+
+		while (getline(linestream, segment, '*')) {
+			seglist.push_back(segment);
+		}
+
+		for (size_t i = 0; i < stoi(seglist[0]); i++) {
+			int16Vector.push_back((__int16)stoi(seglist[1]));
+		}
+	}
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
 		cout << (int)int16Vector[i] << "\n";
 }
 
 void RLECoder::decodeInt32(string fileName)
 {
 	vector<__int32> int32Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int32Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int32Vector[0]), sizeof(__int32) * int32Vector.size());
+	ifstream file(fileName);
+	string line;
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
+	while (getline(file, line, '+'))
+	{
+		string segment;
+		stringstream linestream(line);
+		vector<string> seglist;
+
+		while (getline(linestream, segment, '*')) {
+			seglist.push_back(segment);
+		}
+
+		for (size_t i = 0; i < stoi(seglist[0]); i++) {
+			int32Vector.push_back((__int32)stoi(seglist[1]));
+		}
+	}
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
 		cout << (int)int32Vector[i] << "\n";
 }
 
 void RLECoder::decodeInt64(string fileName)
 {
 	vector<__int64> int64Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int64Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int64Vector[0]), sizeof(__int64) * int64Vector.size());
+	ifstream file(fileName);
+	string line;
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
+	while (getline(file, line, '+'))
+	{
+		string segment;
+		stringstream linestream(line);
+		vector<string> seglist;
+
+		while (getline(linestream, segment, '*')) {
+			seglist.push_back(segment);
+		}
+
+		for (size_t i = 0; i < stoi(seglist[0]); i++) {
+			int64Vector.push_back((__int64)stoi(seglist[1]));
+		}
+	}
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
 		cout << (int)int64Vector[i] << "\n";
 }
 
 
 
 void RLECoder::encodeString(string fileName) {
-	/*vector<string> vectorString = csvReader.readString(fileName);
+	vector<string> vectorString = csvReader.readString(fileName); 
+
+	string outputString;
+	int n = vectorString.size();
+	if (n <= 1)
+		cout << "Why am I trying to encode an empty vector?";
+
+	for (int i = 0; i < n; i++)
+	{
+		int count = 1;
+		while (vectorString[i] == vectorString[i + 1]) {
+			count++;
+			i++;
+		}
+		//TODO: Skip add if next is not same. Then also in decoder
+		outputString += to_string(count); 
+		outputString += "*";
+		outputString += (vectorString[i]);
+	    outputString += "+";
+	}
 
 	string newFileName = fileName;
-
 	newFileName.erase(newFileName.length() - 4);
-	newFileName += ".bin";
+	newFileName += ".rle";
 
-	ofstream file(newFileName, ios::binary);
-	int a = vectorString.size();
-	cout << a;
-	cout << vectorString[0];
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorString[0]), sizeof(string) * vectorString.size());
- */
+	ofstream file(newFileName); 
+	file << outputString;
+	file.close();
+
+	cout << "Encoded " << fileName << "with data type string into run length encoded format. Output file: " << newFileName << " length of output: "<< outputString.size();
+ 
+	//for (int i = 0; i < 200; i++)	
+	//	cout << outputString[i];
+	
 
 }
+
+
+
 void RLECoder::decodeString(string fileName) {
-	//vector<string> tester;
 
-	//ifstream file(fileName, ios::binary);
-	//int a;
-	//file.read(reinterpret_cast<char*>(&a), sizeof(a)); 
-	//tester.resize(a);
-	//file.read(reinterpret_cast<char*>(&tester[0]), sizeof(string) * tester.size());
-	// 
-	//cout << tester.size();
-	//cout << tester[0];
-	//cout << tester[1];
-	//cout << tester[2];
+	vector<string> stringVector; // output vector
 
+	ifstream file(fileName); // the file that is youknow
+
+	string line;// each string up to a +: so is a number, then *, then the content
+
+	while (getline(file, line, '+')) 
+	{
+		//TODO :Add exception 
+		string segment; 
+		stringstream linestream(line);
+		vector<string> seglist;
+
+		while (getline(linestream, segment, '*')) {
+			seglist.push_back(segment);
+		}
+
+		for (size_t i = 0; i < stoi(seglist[0]); i++) {
+			stringVector.push_back(seglist[1]);
+		}
+		
+
+	}
+	file.close();
+
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
+		cout <<  stringVector[i] << "\n";
 }
 
+
+ 
