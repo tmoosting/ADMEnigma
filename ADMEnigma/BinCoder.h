@@ -17,11 +17,14 @@ public:
 
 	void processArguments(string opType, string dataType, string fileName);
 
-	void encodeInt8(vector<__int8> vectorInt8, string fileName);
-
-	void encodeInt(string dataType, string fileName);
-
-	void decodeInt(string dataType, string fileName);
+	void encodeInt8( string fileName);
+	void encodeInt16( string fileName);
+	void encodeInt32( string fileName);
+	void encodeInt64( string fileName);
+	void decodeInt8(string fileName);
+	void decodeInt16(string fileName);
+	void decodeInt32(string fileName);
+	void decodeInt64(string fileName); 
 
 	void encodeString(string fileName);
 
