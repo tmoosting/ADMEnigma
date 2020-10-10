@@ -20,6 +20,7 @@ vector<__int8> CSVReader::readInt8(string fileName) {
         __int8 snazzyInt = (__int8)stoi(line);
         returnVector.push_back(snazzyInt); 
     } 
+    file.close();
     return returnVector;
 }
 vector<__int16> CSVReader::readInt16(string fileName) {
@@ -32,6 +33,7 @@ vector<__int16> CSVReader::readInt16(string fileName) {
         __int16 snazzyInt = (__int16)stoi(line);
         returnVector.push_back(snazzyInt);
     }
+    file.close();
     return returnVector;
 }
 vector<__int32> CSVReader::readInt32(string fileName) {
@@ -44,6 +46,7 @@ vector<__int32> CSVReader::readInt32(string fileName) {
         __int32 snazzyInt = (__int32)stoi(line);
         returnVector.push_back(snazzyInt);
     }
+    file.close();
     return returnVector;
 }
 vector<__int64> CSVReader::readInt64(string fileName) {
@@ -56,6 +59,7 @@ vector<__int64> CSVReader::readInt64(string fileName) {
         __int64 snazzyInt = (__int64)stoi(line);
         returnVector.push_back(snazzyInt);
     }
+    file.close();
     return returnVector;
 }
 vector<string> CSVReader::readString(string fileName) {
@@ -66,6 +70,7 @@ vector<string> CSVReader::readString(string fileName) {
     {
         returnVector.push_back(line); 
     } 
+    file.close();
     return returnVector;
 }
 

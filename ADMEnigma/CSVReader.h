@@ -10,9 +10,11 @@
 
 using namespace std;
 
+
+
 class CSVReader
 {
-public:
+public: 
 	vector<__int8> readInt8(string fileName);
 	vector<__int16> readInt16(string fileName);
 	vector<__int32> readInt32(string fileName);

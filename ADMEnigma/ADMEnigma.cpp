@@ -2,6 +2,10 @@
 //
 
 #include "BinCoder.h"
+#include "RLECoder.h"
+#include "DicCoder.h"
+#include "FORCoder.h"
+#include "DifCoder.h"
 #include "CSVReader.h"
 #include "CSVWriter.h"
 #include <iostream>
@@ -12,12 +16,17 @@
 
 using namespace std; 
 
+
 string validateArguments(int argc, char** argv);
 void processArguments(int argc, char** argv);
 
 
 // Make Object of each compression class
 BinCoder binCoder;
+RLECoder rleCoder;
+DicCoder dicCoder;
+FORCoder forCoder;
+DifCoder difCoder;
 
  
 //// ENUMS
@@ -39,6 +48,8 @@ int main(int argc, char** argv)
 
 void processArguments(int argc, char** argv)
 {
+
+    //TODO: Error handling: no string for most compression types
     string operationType = argv[1];
     string compression = argv[2];
     string dataType = argv[3];
@@ -54,18 +65,18 @@ void processArguments(int argc, char** argv)
         binCoder.processArguments(operationType, dataType, fileName);
     }
     if (compression == "RLE") {
-     //   binCoder.processArguments(operationType, dataType, fileName);
+       rleCoder.processArguments(operationType, dataType, fileName);
     }
     if (compression == "DIC") {
-    //    binCoder.processArguments(operationType, dataType, fileName);
+       dicCoder.processArguments(operationType, dataType, fileName);
     }
     if (compression == "FOR") {
-    //    binCoder.processArguments(operationType, dataType, fileName);
+       forCoder.processArguments(operationType, dataType, fileName);
     }
     if (compression == "DIF") {
-    //    binCoder.processArguments(operationType, dataType, fileName);
+        difCoder.processArguments(operationType, dataType, fileName);
     }
-    // std::cout << codeOption << "  " << compression << dataType << fileName << "\n";
+     
 }
  
 // Returns "valid" if all arguments are succesful, returns the problematic argument if not

@@ -1,3 +1,3 @@
-makeandbake:ADMEnigma.cpp BinCoder.cpp
-	g++ ADMEnigma.cpp BinCoder.cpp CSVReader.cpp CSVWriter.cpp -o program.exe
+makeandbake:ADMEnigma.cpp CSVReader.cpp BinCoder.cpp RLECoder.cpp DicCoder.cpp FORCoder.cpp DifCoder.cpp
+	g++ ADMEnigma.cpp CSVReader.cpp BinCoder.cpp RLECoder.cpp DicCoder.cpp FORCoder.cpp DifCoder.cpp -o program.exe
 	REM Compiled and ready to go! Please enter: program.exe with commands: Action, Compression, DataType, Filename
