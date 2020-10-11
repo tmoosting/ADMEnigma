@@ -28,9 +28,5 @@ public:
 	void decodeString(string fileName);
 
  
-	template<typename T> 
-	void encodeInt(string fileName);  
-	 // https://riptutorial.com/cplusplus/example/28734/explicit-instantiation 
-	// https://stackoverflow.com/questions/456713/why-do-i-get-unresolved-external-symbol-errors-when-using-templates
 };
 

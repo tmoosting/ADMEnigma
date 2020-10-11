@@ -281,9 +281,7 @@ void DicCoder::decodeInt16(string fileName)
 		string keyValueString = keyValueStrings[i];
 		int colonPos = keyValueString.find(":");
 		string keyString = keyValueString.substr(0, colonPos);
-		string valueString = keyValueString.substr(colonPos + 1, keyValueString.length());
-		//cout << "keyString: " << keyString;
-		//cout << "valueString: " << valueString;
+		string valueString = keyValueString.substr(colonPos + 1, keyValueString.length()); 
 		pair <__int16, __int16> keyval;
 		keyval = make_pair((__int16)stoi(valueString), (__int16)stoi(keyString));
 		freshMap.insert(keyval);
@@ -457,9 +455,7 @@ void DicCoder::decodeString(string fileName) {
 		string keyValueString = keyValueStrings[i];
 		int colonPos = keyValueString.find(":");
 		string keyString = keyValueString.substr(0, colonPos);
-		string valueString = keyValueString.substr(colonPos + 1, keyValueString.length());
-		//cout << "keyString: " << keyString;
-		//cout << "valueString: " << valueString;
+		string valueString = keyValueString.substr(colonPos + 1, keyValueString.length()); 
 		pair <int, string> keyval;
 		keyval = make_pair((int)stoi(valueString), keyString);
 		freshMap.insert(keyval);
@@ -487,31 +483,19 @@ void DicCoder::decodeString(string fileName) {
  
 vector<string> DicCoder::splitIntoSubstrings(string str, char dl)
 {
-	string word = "";
-	// to count the number of split strings 
-	int num = 0;
-	// adding delimiter character at the end 
-	// of 'str' 
-	str = str + dl;
-	// length of 'str' 
-	int l = str.size();
-	// traversing 'str' from left to right 
+	string word = ""; 
+	int num = 0; 
+	str = str + dl; 
+	int l = str.size(); 
 	vector<string> substr_list;
-	for (int i = 0; i < l; i++) {
-		// if str[i] is not equal to the delimiter 
-		// character then accumulate it to 'word' 
+	for (int i = 0; i < l; i++) { 
 		if (str[i] != dl)
 			word = word + str[i];
-		else {
-			// if 'word' is not an empty string, 
-			// then add this 'word' to the array 
-			// 'substr_list[]' 
+		else { 
 			if ((int)word.size() != 0)
-				substr_list.push_back(word);
-			// reset 'word' 
+				substr_list.push_back(word); 
 			word = "";
 		}
-	}
-	// return the splitted strings 
+	} 
 	return substr_list;
 }

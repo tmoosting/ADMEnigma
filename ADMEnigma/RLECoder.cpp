@@ -70,8 +70,7 @@ void RLECoder::encodeInt8(string fileName) {
 		while (vectorInt8[i] == vectorInt8[i + 1]) {
 			count++;
 			i++;
-		}
-		//TODO: Skip add if next is not same. Then also in decoder
+		} 
 		outputString += to_string(count);
 		outputString += "*";
 		outputString += to_string(vectorInt8[i]);
@@ -331,10 +330,7 @@ void RLECoder::encodeString(string fileName) {
 	file.close();
 
 	cout << "Encoded " << fileName << "with data type string into run length encoded format. Output file: " << newFileName << " length of output: "<< outputString.size();
- 
-	//for (int i = 0; i < 200; i++)	
-	//	cout << outputString[i];
-	
+   
 
 }
 
@@ -349,8 +345,7 @@ void RLECoder::decodeString(string fileName) {
 	string line;// each string up to a +: so is a number, then *, then the content
 
 	while (getline(file, line, '+')) 
-	{
-		//TODO :Add exception 
+	{ 
 		string segment; 
 		stringstream linestream(line);
 		vector<string> seglist;

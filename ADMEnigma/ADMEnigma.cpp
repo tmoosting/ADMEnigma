@@ -33,12 +33,7 @@ RLECoder rleCoder;
 DicCoder dicCoder;
 FORCoder forCoder;
 DifCoder difCoder;
-
- 
-//// ENUMS
-//enum   operationtype { encode, decode } operationType;
-//enum   compressiontype { bin, rle, dic, fror, dif }compressionType;
- 
+   
 
 int main(int argc, char** argv)
 {
@@ -49,14 +44,12 @@ int main(int argc, char** argv)
         cout << validString << "\n";    
     else 
         processArguments(argc, argv); 
-
-    // TODO: out message
+     
 } 
 
 void processArguments(int argc, char** argv)
 {
-
-    //TODO: Error handling: no string for most compression types
+     
     string operationType = argv[1];
     string compression = argv[2];
     string dataType = argv[3];
@@ -65,8 +58,7 @@ void processArguments(int argc, char** argv)
     transform(compression.begin(), compression.end(), compression.begin(), ::toupper);
     transform(dataType.begin(), dataType.end(), dataType.begin(), ::toupper); 
 
-    float operationTime;
-    //  if (compression != "BIN" && compression != "RLE" && compression != "DIC" && compression !=  "FOR" && compression != "DIF")
+    float operationTime; 
     if (compression == "BIN") {
         operationTime =   binCoder.processArguments(operationType, dataType, fileName, outputCount);
     }
@@ -88,15 +80,14 @@ void processArguments(int argc, char** argv)
 
 // Returns "valid" if all arguments are succesful, returns the problematic argument if not
 string validateArguments(int argc, char** argv)
-{ 
-    // TODO: make global variable. Set outputCount to that if not 6. Apply to rest of scripts
+{  
     string outputCountString;
     // validate amount of arguments
     if (argc == 6) { 
         outputCount = stoi(argv[5]);
     }         
     else if (argc != 5)
-        return "Invalid count: # of arguments should be 4, not " + to_string(argc - 1);
+        return "Invalid count: # of arguments should be 4 or 5, not " + to_string(argc - 1);
 
     string operationType = argv[1];
     string compression = argv[2];
@@ -123,8 +114,7 @@ string validateArguments(int argc, char** argv)
     if (compression == "BIN" || compression == "FOR" || compression == "DIF")
         if (dataType == "STRING")
             return "Invalid DATA TYPE: " + dataType + " IS NOT VALID FOR Bin, FOR and Dif encoding";
-    // validate filename 
-     // TODO: check filename ditzy datzy probably dependent on operation type
+    // validate filename  
      
     if (!file_exists(fileName))
         return "FILE NOT FOUND: " + fileName;
@@ -133,8 +123,7 @@ string validateArguments(int argc, char** argv)
 
 void writeOperationData(string opType, string compression, string dataType, string fileName, float operationTime) {
 
-    string outputString;
-    //  outputString += "Filename,Operation,Compression,DataType,Size,Time\n"; 
+    string outputString; 
     outputString += fileName;
     outputString += ",";
     outputString += opType;
@@ -145,14 +134,12 @@ void writeOperationData(string opType, string compression, string dataType, stri
     outputString += ",";
 
     // filesize
-    string sizeCheckFileName = fileName;
-
+    string sizeCheckFileName = fileName; 
     if (opType == "DE") {
         sizeCheckFileName.erase(sizeCheckFileName.length() - 4);
         sizeCheckFileName += ".";
         sizeCheckFileName += compression;
-    }
-
+    } 
     string sizeString = to_string(getFileSize(sizeCheckFileName));
     size_t pos1 = sizeString.find(".");
     if (pos1 != std::string::npos)
@@ -188,7 +175,6 @@ float getFileSize(string fileName) {
   
 
 }
-
  
 bool file_exists(string fileName)
 {
