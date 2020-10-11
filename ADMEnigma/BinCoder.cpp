@@ -5,13 +5,50 @@
 #include <string>
 #include <fstream> 
 #include <vector>
+#include <chrono> 
 
 using namespace std;
-
+using namespace chrono;
+ 
   
+//float BinCoder::processArguments(string opType, string dataType, string fileName)
+//{
+//	if (opType == "EN") {
+//		if (dataType == "STRING") {
+//			//encodeString(fileName); 
+//		}
+//		else {
+//			if (dataType == "INT8")
+//				encodeInt<__int8>(fileName);
+//			else 	if (dataType == "INT16")
+//				encodeInt<__int16>(fileName);
+//			else 	if (dataType == "INT32")
+//				encodeInt<__int32>(fileName);
+//			else 	if (dataType == "INT64")
+//				encodeInt<__int64>(fileName);
+//		}
+//	}
+//	else 	if (opType == "DE") {
+//		if (dataType == "STRING") {
+//			//	decodeString(fileName);
+//		}
+//		else {
+//			if (dataType == "INT8")
+//				decodeInt8(fileName);
+//			else 	if (dataType == "INT16")
+//				decodeInt16(fileName);
+//			else 	if (dataType == "INT32")
+//				decodeInt32(fileName);
+//			else 	if (dataType == "INT64")
+//				decodeInt64(fileName);
+//		}
+//	}
+//	return 0;
+//}
 
-void BinCoder::processArguments(string opType, string dataType, string fileName)
+float BinCoder::processArguments(string opType, string dataType, string fileName)
 {
+	auto start = high_resolution_clock::now();
 	if (opType == "EN") {
 		if (dataType == "STRING") {
 			//encodeString(fileName); 
@@ -42,12 +79,28 @@ void BinCoder::processArguments(string opType, string dataType, string fileName)
 				decodeInt64(fileName);
 		}
 	} 
+	auto stop = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(stop - start); 
+	return duration.count();
 }
 
  
  
-
-
+//template <typename T>
+//void BinCoder::encodeInt(string fileName) {
+//	vector<T> vectorInt = csvReader.readInt<T>(fileName);
+//	string binFileName = fileName;
+//	binFileName.erase(binFileName.length() - 4);
+//	binFileName += ".bin";
+//
+//	ofstream file(binFileName, ios::binary);
+//	int a = vectorInt.size();
+//	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
+//	file.write(reinterpret_cast<const char*>(&vectorInt[0]), sizeof(__int8) * vectorInt.size());
+//
+//	cout << "Encoded " << fileName << "with data type ..  into uncompressed binary format. Output file: " << binFileName;
+//	//cout << "Encoded " << fileName << "with data type " << to_string(T) <<" into uncompressed binary format. Output file: " << binFileName;
+//}
 
 
 void BinCoder::encodeInt8(  string fileName) {

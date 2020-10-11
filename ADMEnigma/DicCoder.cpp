@@ -7,12 +7,15 @@
 #include <vector>
 #include <map>
 #include <utility>      
+#include <chrono> 
 
 using namespace std;
+using namespace chrono;
  
 
-void DicCoder::processArguments(string opType, string dataType, string fileName)
+float DicCoder::processArguments(string opType, string dataType, string fileName)
 {
+	auto start = high_resolution_clock::now();
 	if (opType == "EN") {
 		if (dataType == "STRING") {
 			encodeString(fileName); 
@@ -43,6 +46,9 @@ void DicCoder::processArguments(string opType, string dataType, string fileName)
 				decodeInt64(fileName);
 		}
 	}
+	auto stop = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(stop - start);
+	return duration.count();
 }
 
 

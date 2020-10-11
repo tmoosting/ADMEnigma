@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CSVReader.h" 
+#include "CSVReader.h"  
 #include <iostream>
 #include <algorithm>
 #include <string>
@@ -14,7 +14,7 @@ class BinCoder
 {
 public:	  
 	CSVReader csvReader;
-	void processArguments(string opType, string dataType, string fileName);
+	float processArguments(string opType, string dataType, string fileName);
 	void encodeInt8( string fileName);
 	void encodeInt16( string fileName);
 	void encodeInt32( string fileName);
@@ -26,5 +26,10 @@ public:
 	void encodeString(string fileName);
 	void decodeString(string fileName);
 
+ 
+	template<typename T> 
+	void encodeInt(string fileName);  
+	 // https://riptutorial.com/cplusplus/example/28734/explicit-instantiation 
+	// https://stackoverflow.com/questions/456713/why-do-i-get-unresolved-external-symbol-errors-when-using-templates
 };
 

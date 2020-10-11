@@ -13,13 +13,17 @@
 #include <string>
 #include <fstream> 
 #include <vector>
+#include <chrono>
+#include <filesystem>
 
 using namespace std; 
+using namespace chrono; 
 
 
 string validateArguments(int argc, char** argv);
 void processArguments(int argc, char** argv);
-
+void writeOperationData(string opType, string compression, string dataType, string fileName, float operationTime);
+float getFileSize(string fileName);
 
 // Make Object of each compression class
 BinCoder binCoder;
@@ -32,6 +36,7 @@ DifCoder difCoder;
 //// ENUMS
 //enum   operationtype { encode, decode } operationType;
 //enum   compressiontype { bin, rle, dic, fror, dif }compressionType;
+ 
 
 int main(int argc, char** argv)
 {
@@ -59,26 +64,79 @@ void processArguments(int argc, char** argv)
     transform(dataType.begin(), dataType.end(), dataType.begin(), ::toupper);
     transform(fileName.begin(), fileName.end(), fileName.begin(), ::toupper);
 
-
+    float operationTime;
     //  if (compression != "BIN" && compression != "RLE" && compression != "DIC" && compression !=  "FOR" && compression != "DIF")
     if (compression == "BIN") {
-        binCoder.processArguments(operationType, dataType, fileName);
+        operationTime =   binCoder.processArguments(operationType, dataType, fileName);
     }
     if (compression == "RLE") {
-       rleCoder.processArguments(operationType, dataType, fileName);
+        operationTime = rleCoder.processArguments(operationType, dataType, fileName);
     }
     if (compression == "DIC") {
-       dicCoder.processArguments(operationType, dataType, fileName);
+        operationTime = dicCoder.processArguments(operationType, dataType, fileName);
     }
     if (compression == "FOR") {
-       forCoder.processArguments(operationType, dataType, fileName);
+        operationTime =  forCoder.processArguments(operationType, dataType, fileName);
     }
     if (compression == "DIF") {
-        difCoder.processArguments(operationType, dataType, fileName);
+        operationTime = difCoder.processArguments(operationType, dataType, fileName);
     }
-     
+    writeOperationData(operationType, compression, dataType, fileName, operationTime);
 }
- 
+void writeOperationData(string opType, string compression, string dataType, string fileName, float operationTime) {
+
+    string outputString = "\n";
+    outputString += fileName;
+    outputString += ",";
+    outputString += compression;
+    outputString += ",";
+    outputString += dataType;
+    outputString += ","; 
+
+
+    string sizeCheckFileName = fileName;
+    sizeCheckFileName.erase(sizeCheckFileName.length() - 4); 
+    sizeCheckFileName += ".";
+    sizeCheckFileName += compression;
+    string sizeString = to_string(getFileSize(sizeCheckFileName));
+    size_t pos1 = sizeString.find(".");
+    if (pos1 != std::string::npos)
+        sizeString.erase(pos1, sizeString.length());
+    outputString += "size: " + sizeString + " kb ";
+    outputString += ",";
+     
+    string timeString = to_string(operationTime); 
+    size_t pos2 = timeString.find(".");
+    if (pos2 != std::string::npos) 
+        timeString.erase(pos2-3, timeString.length()); 
+     
+    outputString += " timed at: " + timeString;
+    outputString += " ms \n";
+
+    std::ofstream outfile;
+    outfile.open("OperationData.txt", std::ios_base::app);  
+    outfile << outputString; 
+    outfile.close();
+}
+
+float getFileSize(string fileName) {
+    // TODO fix  
+
+    ifstream testFile(fileName, ios::binary);
+    const auto begin = testFile.tellg();
+    testFile.seekg(0, ios::end);
+    const auto end = testFile.tellg();
+    const auto fsize = (end - begin); 
+    return fsize;
+
+  /*  cout << "checkin for filename " << fileName;
+    ifstream in_file(fileName, ios::binary);
+    in_file.seekg(0, ios::end);
+    float file_size = in_file.tellg();
+    return file_size;*/
+    
+}
+
 // Returns "valid" if all arguments are succesful, returns the problematic argument if not
 string validateArguments(int argc, char** argv)
 { 

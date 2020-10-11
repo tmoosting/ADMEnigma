@@ -10,6 +10,21 @@
 using namespace std;
  
 
+template <typename T>
+vector<T> CSVReader::readInt(string fileName) {
+    vector<T> returnVector;
+    ifstream file(fileName);
+    string line;
+    while (getline(file, line, '\n')) // there is input overload classfile
+    {
+        //TODO :Add exception 
+        T snazzyInt = (T)stoi(line);
+        returnVector.push_back(snazzyInt);
+    }
+    file.close();
+    return returnVector;
+}
+
 vector<__int8> CSVReader::readInt8(string fileName) {    
     vector<__int8> returnVector; 
     ifstream file(fileName);

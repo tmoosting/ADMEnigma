@@ -12,7 +12,7 @@ class RLECoder
 {
 public: 
 	CSVReader csvReader;
-	void processArguments(string opType, string dataType, string fileName);
+	float processArguments(string opType, string dataType, string fileName);
 	void encodeInt8(string fileName);
 	void encodeInt16(string fileName);
 	void encodeInt32(string fileName);
