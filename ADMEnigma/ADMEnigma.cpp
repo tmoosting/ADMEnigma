@@ -98,9 +98,13 @@ void writeOperationData(string opType, string compression, string dataType, stri
 
     // filesize
     string sizeCheckFileName = fileName;
-    sizeCheckFileName.erase(sizeCheckFileName.length() - 4); 
-    sizeCheckFileName += ".";
-    sizeCheckFileName += compression;
+
+    if (opType == "DE") {
+        sizeCheckFileName.erase(sizeCheckFileName.length() - 4);
+        sizeCheckFileName += ".";
+        sizeCheckFileName += compression;
+    }
+  
     string sizeString = to_string(getFileSize(sizeCheckFileName));
     size_t pos1 = sizeString.find(".");
     if (pos1 != std::string::npos)

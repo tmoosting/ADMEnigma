@@ -171,8 +171,8 @@ void BinCoder::decodeInt8(string fileName)
 	int8Vector.resize(a);
 	file.read(reinterpret_cast<char*>(&int8Vector[0]), sizeof(__int8) * int8Vector.size());
 	 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)	
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)	
 		cout << (int)int8Vector[i] << "\n";   
 }
 void BinCoder::decodeInt16(string fileName)
@@ -184,8 +184,8 @@ void BinCoder::decodeInt16(string fileName)
 	int16Vector.resize(a);
 	file.read(reinterpret_cast<char*>(&int16Vector[0]), sizeof(__int16) * int16Vector.size());
 	 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
 		cout << (int)int16Vector[i] << "\n";
 }
 
@@ -199,7 +199,7 @@ void BinCoder::decodeInt32(string fileName)
 	file.read(reinterpret_cast<char*>(&int32Vector[0]), sizeof(__int32) * int32Vector.size());
 
 	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 20; i++)
 		cout << (int)int32Vector[i] << "\n";
 }
 
@@ -213,7 +213,7 @@ void BinCoder::decodeInt64(string fileName)
 	file.read(reinterpret_cast<char*>(&int64Vector[0]), sizeof(__int64) * int64Vector.size());
 
 	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 20; i++)
 		cout << (int)int64Vector[i] << "\n";
 }
 

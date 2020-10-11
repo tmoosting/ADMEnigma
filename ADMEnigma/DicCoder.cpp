@@ -465,7 +465,7 @@ void DicCoder::decodeString(string fileName) {
 		stringstream linestream(contentString);
 		vector<string> seglist;
 		while (getline(linestream, segment, '+')) {
-			stringVector.push_back(freshMap[(__int8)stoi(segment)]);
+			stringVector.push_back(freshMap[(int)stoi(segment)]);
 		}
 	}
 
