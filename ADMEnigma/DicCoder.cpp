@@ -6,6 +6,7 @@
 #include <fstream> 
 #include <vector>
 #include <map>
+#include <utility>      
 
 using namespace std;
  
@@ -51,87 +52,149 @@ void DicCoder::processArguments(string opType, string dataType, string fileName)
 
 
 void DicCoder::encodeInt8(string fileName) {
-	vector<__int8> vectorInt8 = csvReader.readInt8(fileName);
- 
-
-//dictionary: map of string to CodeType
-//S : empty string
-//c : byte
-//DF : the data file
-//EF : the encoded file
-
-
-	string checkString;
+	vector<__int8> vectorInt = csvReader.readInt8(fileName);  
+	string outputString;
 	map<__int8, __int8> intMap;
 
-	// Iterate through all members and add each new smallest-possible-combination to dict 
+	// create map keys
+	for (size_t i = 0; i < vectorInt.size(); i++)
+	{
+		  pair <__int8, __int8> keyval = make_pair(vectorInt[i], intMap.size());
 
-//	while (  )
-//{
-//	checkString = S + c       // append c to S
-//
-//		if (dictionary doesn't contain S )
-//		{
-//			dictionary[S] = next unused code
-//				// if the dictionary had entries for codes 0 to 17,
-//				// this would add an entry for code 18, with the key S
-//
-//				S = S - $   // remove last byte from S
-//				write dictionary[S] to EF
-//				S = c       // S now contains only c
-//		}
-//}
-//
-//	if (S isn't empty )
-//	write dictionary[S] to EF
+		  intMap.insert(keyval);
+		 
+	} 
+	 // write dict  
+	for (const auto& p : intMap)
+	{
+		outputString += to_string(p.first) + ":" + to_string(p.second) + ","; 
+	} 
+	// write rest through dict
+	for (size_t i = 0; i < vectorInt.size(); i++)
+	{
+		outputString += to_string(intMap[vectorInt[i]]);
+		outputString += ",";
+	}
+	  
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".dic";
 
-
-	//writing to file: put key/values at the top, define length, when decoding use keys at start
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int8 into dictionary encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
 
 }
 void DicCoder::encodeInt16(string fileName)
 {
-	vector<__int16> vectorInt16 = csvReader.readInt16(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int16> vectorInt = csvReader.readInt16(fileName);
+	string outputString;
+	map<__int16, __int16> intMap;
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt16.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt16[0]), sizeof(__int16) * vectorInt16.size());
+	// create map keys
+	for (size_t i = 0; i < vectorInt.size(); i++)
+	{
+		pair <__int16, __int16> keyval = make_pair(vectorInt[i], intMap.size());
 
-	cout << "Encoded " << fileName << "with data type int16 into uncompressed binary format. Output file: " << binFileName;
+		intMap.insert(keyval);
+
+	}
+	// write dict  
+	for (const auto& p : intMap)
+	{
+		outputString += to_string(p.first) + ":" + to_string(p.second) + ",";
+	}
+	// write rest through dict
+	for (size_t i = 0; i < vectorInt.size(); i++)
+	{
+		outputString += to_string(intMap[vectorInt[i]]);
+		outputString += ",";
+	}
+
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".dic";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int16into dictionary encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 void DicCoder::encodeInt32(string fileName)
 {
-	vector<__int32> vectorInt32 = csvReader.readInt32(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int32> vectorInt = csvReader.readInt32(fileName);
+	string outputString;
+	map<__int32, __int32> intMap;
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt32.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt32[0]), sizeof(__int32) * vectorInt32.size());
+	// create map keys
+	for (size_t i = 0; i < vectorInt.size(); i++)
+	{
+		pair <__int32, __int32> keyval = make_pair(vectorInt[i], intMap.size());
 
-	cout << "Encoded " << fileName << "with data type int32 into uncompressed binary format. Output file: " << binFileName;
+		intMap.insert(keyval);
+
+	}
+	// write dict  
+	for (const auto& p : intMap)
+	{
+		outputString += to_string(p.first) + ":" + to_string(p.second) + ",";
+	}
+	// write rest through dict
+	for (size_t i = 0; i < vectorInt.size(); i++)
+	{
+		outputString += to_string(intMap[vectorInt[i]]);
+		outputString += ",";
+	}
+
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".dic";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int32 into dictionary encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 void DicCoder::encodeInt64(string fileName)
 {
-	vector<__int64> vectorInt64 = csvReader.readInt64(fileName);
-	string binFileName = fileName;
-	binFileName.erase(binFileName.length() - 4);
-	binFileName += ".bin";
+	vector<__int64> vectorInt = csvReader.readInt64(fileName);
+	string outputString;
+	map<__int64, __int64> intMap;
 
-	ofstream file(binFileName, ios::binary);
-	int a = vectorInt64.size();
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorInt64[0]), sizeof(__int64) * vectorInt64.size());
+	// create map keys
+	for (size_t i = 0; i < vectorInt.size(); i++)
+	{
+		pair <__int64, __int64> keyval = make_pair(vectorInt[i], intMap.size());
 
-	cout << "Encoded " << fileName << "with data type int64 into uncompressed binary format. Output file: " << binFileName;
+		intMap.insert(keyval);
+
+	}
+	// write dict  
+	for (const auto& p : intMap)
+	{
+		outputString += to_string(p.first) + ":" + to_string(p.second) + ",";
+	}
+	// write rest through dict
+	for (size_t i = 0; i < vectorInt.size(); i++)
+	{
+		outputString += to_string(intMap[vectorInt[i]]);
+		outputString += ",";
+	}
+
+	string newFileName = fileName;
+	newFileName.erase(newFileName.length() - 4);
+	newFileName += ".dic";
+
+	ofstream file(newFileName);
+	file << outputString;
+	file.close();
+	cout << "Encoded " << fileName << "with data type int64 into dictionary encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
 }
 
 
