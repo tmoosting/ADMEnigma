@@ -47,7 +47,7 @@ float DicCoder::processArguments(string opType, string dataType, string fileName
 		}
 	}
 	auto stop = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(stop - start);
+	auto duration = duration_cast<milliseconds>(stop - start);
 	return duration.count();
 }
 
@@ -73,15 +73,20 @@ void DicCoder::encodeInt8(string fileName) {
 	 // write dict  
 	for (const auto& p : intMap)
 	{
-		outputString += to_string(p.first) + ":" + to_string(p.second) + ","; 
+		outputString += to_string(p.first) + ":" + to_string(p.second) + "+"; 
 	} 
+	// marker for recreating map
+	outputString += "*";
 	// write rest through dict
 	for (size_t i = 0; i < vectorInt.size(); i++)
 	{
 		outputString += to_string(intMap[vectorInt[i]]);
-		outputString += ",";
+		outputString += "+";
 	}
 	  
+	// endmarker for decoding 
+	outputString += "*";
+
 	string newFileName = fileName;
 	newFileName.erase(newFileName.length() - 4);
 	newFileName += ".dic";
@@ -103,19 +108,20 @@ void DicCoder::encodeInt16(string fileName)
 	{
 		pair <__int16, __int16> keyval = make_pair(vectorInt[i], intMap.size());
 
-		intMap.insert(keyval);
-
+		intMap.insert(keyval); 
 	}
 	// write dict  
 	for (const auto& p : intMap)
 	{
-		outputString += to_string(p.first) + ":" + to_string(p.second) + ",";
+		outputString += to_string(p.first) + ":" + to_string(p.second) + "+";
 	}
+	// marker for recreating map
+	outputString += "*";
 	// write rest through dict
 	for (size_t i = 0; i < vectorInt.size(); i++)
 	{
 		outputString += to_string(intMap[vectorInt[i]]);
-		outputString += ",";
+		outputString += "+";
 	}
 
 	string newFileName = fileName;
@@ -146,13 +152,15 @@ void DicCoder::encodeInt32(string fileName)
 	// write dict  
 	for (const auto& p : intMap)
 	{
-		outputString += to_string(p.first) + ":" + to_string(p.second) + ",";
+		outputString += to_string(p.first) + ":" + to_string(p.second) + "+";
 	}
+	// marker for recreating map
+	outputString += "*";
 	// write rest through dict
 	for (size_t i = 0; i < vectorInt.size(); i++)
 	{
 		outputString += to_string(intMap[vectorInt[i]]);
-		outputString += ",";
+		outputString += "+";
 	}
 
 	string newFileName = fileName;
@@ -183,13 +191,15 @@ void DicCoder::encodeInt64(string fileName)
 	// write dict  
 	for (const auto& p : intMap)
 	{
-		outputString += to_string(p.first) + ":" + to_string(p.second) + ",";
+		outputString += to_string(p.first) + ":" + to_string(p.second) + "+";
 	}
+	// marker for recreating map
+	outputString += "*";
 	// write rest through dict
 	for (size_t i = 0; i < vectorInt.size(); i++)
 	{
 		outputString += to_string(intMap[vectorInt[i]]);
-		outputString += ",";
+		outputString += "+";
 	}
 
 	string newFileName = fileName;
@@ -205,92 +215,295 @@ void DicCoder::encodeInt64(string fileName)
 
 
 void DicCoder::decodeInt8(string fileName)
-{
-	vector<__int8> int8Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int8Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int8Vector[0]), sizeof(__int8) * int8Vector.size());
+{ 
+	vector<__int8> intVector;
+	ifstream file(fileName); 
+	string line; 
+	map<__int8, __int8> freshMap;	
+	string dictString;  
+	string contentString;  
+	getline(file, dictString, '*');  
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int8Vector[i] << "\n";
+	// divide dictstring into a set of substrings, each with a: in the middle
+	vector<string> keyValueStrings = splitIntoSubstrings(dictString, '+');
+
+	// foreach of thsoe substrings, divide intwo two substrings, one before, one after the ':'
+	for (size_t i = 0; i < keyValueStrings.size(); i++)
+	{
+		string keyValueString = keyValueStrings[i];
+		int colonPos = keyValueString.find(":");
+		string keyString = keyValueString.substr(0, colonPos);
+		string valueString = keyValueString.substr(  colonPos+1, keyValueString.length());
+		//cout << "keyString: " << keyString;
+		//cout << "valueString: " << valueString;
+		pair <__int8, __int8> keyval;
+		keyval = make_pair((__int8)stoi(valueString), (__int8)stoi(keyString));
+		freshMap.insert(keyval);
+	}	 
+	// Create outputstring using map  
+	while (getline(file, contentString, '*')) { 
+		// iterate through the large string that is the rest
+		string segment;
+		stringstream linestream(contentString);
+		vector<string> seglist;
+		while (getline(linestream, segment, '+')) {
+			intVector.push_back(freshMap[(__int8)stoi(segment)]);
+		} 
+	}
+  
+	file.close();
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
+		cout << (int)intVector[i] << "\n";
 }
+
+
+
+
 void DicCoder::decodeInt16(string fileName)
 {
-	vector<__int16> int16Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int16Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int16Vector[0]), sizeof(__int16) * int16Vector.size());
+	vector<__int16> intVector;
+	ifstream file(fileName);
+	string line;
+	map<__int16, __int16> freshMap;
+	string dictString;
+	string contentString;
+	getline(file, dictString, '*');
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int16Vector[i] << "\n";
+	// divide dictstring into a set of substrings, each with a: in the middle
+	vector<string> keyValueStrings = splitIntoSubstrings(dictString, '+');
+
+	// foreach of thsoe substrings, divide intwo two substrings, one before, one after the ':'
+	for (size_t i = 0; i < keyValueStrings.size(); i++)
+	{
+		string keyValueString = keyValueStrings[i];
+		int colonPos = keyValueString.find(":");
+		string keyString = keyValueString.substr(0, colonPos);
+		string valueString = keyValueString.substr(colonPos + 1, keyValueString.length());
+		//cout << "keyString: " << keyString;
+		//cout << "valueString: " << valueString;
+		pair <__int16, __int16> keyval;
+		keyval = make_pair((__int16)stoi(valueString), (__int16)stoi(keyString));
+		freshMap.insert(keyval);
+	}
+	// Create outputstring using map 
+	while (getline(file, contentString, '*')) {
+		// iterate through the large string that is the rest
+		string segment;
+		stringstream linestream(contentString);
+		vector<string> seglist;
+		while (getline(linestream, segment, '+')) {
+			intVector.push_back(freshMap[(__int16)stoi(segment)]);
+		}
+	}
+
+	file.close();
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
+		cout << (int)intVector[i] << "\n";
 }
 
 void DicCoder::decodeInt32(string fileName)
 {
-	vector<__int32> int32Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int32Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int32Vector[0]), sizeof(__int32) * int32Vector.size());
+	vector<__int32> intVector;
+	ifstream file(fileName);
+	string line;
+	map<__int32, __int32> freshMap;
+	string dictString;
+	string contentString;
+	getline(file, dictString, '*');
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int32Vector[i] << "\n";
+	// divide dictstring into a set of substrings, each with a: in the middle
+	vector<string> keyValueStrings = splitIntoSubstrings(dictString, '+');
+
+	// foreach of thsoe substrings, divide intwo two substrings, one before, one after the ':'
+	for (size_t i = 0; i < keyValueStrings.size(); i++)
+	{
+		string keyValueString = keyValueStrings[i];
+		int colonPos = keyValueString.find(":");
+		string keyString = keyValueString.substr(0, colonPos);
+		string valueString = keyValueString.substr(colonPos + 1, keyValueString.length());
+		//cout << "keyString: " << keyString;
+		//cout << "valueString: " << valueString;
+		pair <__int32, __int32> keyval;
+		keyval = make_pair((__int32)stoi(valueString), (__int32)stoi(keyString));
+		freshMap.insert(keyval);
+	}
+	// Create outputstring using map 
+	while (getline(file, contentString, '*')) {
+		// iterate through the large string that is the rest
+		string segment;
+		stringstream linestream(contentString);
+		vector<string> seglist;
+		while (getline(linestream, segment, '+')) {
+			intVector.push_back(freshMap[(__int32)stoi(segment)]);
+		}
+	}
+
+	file.close();
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
+		cout << (int)intVector[i] << "\n";
 }
 
 void DicCoder::decodeInt64(string fileName)
 {
-	vector<__int64> int64Vector;
-	ifstream file(fileName, ios::binary);
-	int a;
-	file.read(reinterpret_cast<char*>(&a), sizeof(a));
-	int64Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int64Vector[0]), sizeof(__int64) * int64Vector.size());
+	vector<__int64> intVector;
+	ifstream file(fileName);
+	string line;
+	map<__int64, __int64> freshMap;
+	string dictString;
+	string contentString;
+	getline(file, dictString, '*');
 
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
-	for (int i = 0; i < 10; i++)
-		cout << (int)int64Vector[i] << "\n";
+	// divide dictstring into a set of substrings, each with a: in the middle
+	vector<string> keyValueStrings = splitIntoSubstrings(dictString, '+');
+
+	// foreach of thsoe substrings, divide intwo two substrings, one before, one after the ':'
+	for (size_t i = 0; i < keyValueStrings.size(); i++)
+	{
+		string keyValueString = keyValueStrings[i];
+		int colonPos = keyValueString.find(":");
+		string keyString = keyValueString.substr(0, colonPos);
+		string valueString = keyValueString.substr(colonPos + 1, keyValueString.length());
+		//cout << "keyString: " << keyString;
+		//cout << "valueString: " << valueString;
+		pair <__int64, __int64> keyval;
+		keyval = make_pair((__int64)stoi(valueString), (__int64)stoi(keyString));
+		freshMap.insert(keyval);
+	}
+	// Create outputstring using map 
+	while (getline(file, contentString, '*')) {
+		// iterate through the large string that is the rest
+		string segment;
+		stringstream linestream(contentString);
+		vector<string> seglist;
+		while (getline(linestream, segment, '+')) {
+			intVector.push_back(freshMap[(__int64)stoi(segment)]);
+		}
+	}
+
+	file.close();
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
+		cout << (int)intVector[i] << "\n";
 }
 
 
 
 void DicCoder::encodeString(string fileName) {
-	/*vector<string> vectorString = csvReader.readString(fileName);
+ 
+		vector<string> vectorStr = csvReader.readString(fileName);
+		string outputString;
+		map<string, int> strMap;
 
-	string newFileName = fileName;
+		// create map keys
+		for (size_t i = 0; i < vectorStr.size(); i++)
+		{
+			pair <string, int> keyval = make_pair(vectorStr[i], strMap.size());
 
-	newFileName.erase(newFileName.length() - 4);
-	newFileName += ".bin";
+			strMap.insert(keyval);
 
-	ofstream file(newFileName, ios::binary);
-	int a = vectorString.size();
-	cout << a;
-	cout << vectorString[0];
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorString[0]), sizeof(string) * vectorString.size());
- */
+		}
+		// write dict
+		for (const auto& p : strMap)
+		{
+			outputString += (p.first) + ":" + to_string(p.second) + "+";
+		}
+		// marker for recreating map
+		outputString += "*";
+		// write rest through dict
+		for (size_t i = 0; i < vectorStr.size(); i++)
+		{
+			outputString += to_string(strMap[vectorStr[i]]);
+			outputString += "+";
+		}
+		// endmarker
+		outputString += "*";
+		string newFileName = fileName;
+		newFileName.erase(newFileName.length() - 4);
+		newFileName += ".dic";
 
-}
+		ofstream file(newFileName);
+		file << outputString;
+		file.close();
+		cout << "Encoded " << fileName << "with data type string into dictionary encoded format. Output file: " << newFileName << " length of output: " << outputString.size();
+
+	}
+
+
+ 
 void DicCoder::decodeString(string fileName) {
-	//vector<string> tester;
+	vector<string> stringVector;
+	ifstream file(fileName);
+	string line;
+	map<int, string> freshMap;
+	string dictString;
+	string contentString;
+	getline(file, dictString, '*');
 
-	//ifstream file(fileName, ios::binary);
-	//int a;
-	//file.read(reinterpret_cast<char*>(&a), sizeof(a)); 
-	//tester.resize(a);
-	//file.read(reinterpret_cast<char*>(&tester[0]), sizeof(string) * tester.size());
-	// 
-	//cout << tester.size();
-	//cout << tester[0];
-	//cout << tester[1];
-	//cout << tester[2];
+	// divide dictstring into a set of substrings, each with a: in the middle
+	vector<string> keyValueStrings = splitIntoSubstrings(dictString, '+');
+
+	// foreach of thsoe substrings, divide intwo two substrings, one before, one after the ':'
+	for (size_t i = 0; i < keyValueStrings.size(); i++)
+	{
+		string keyValueString = keyValueStrings[i];
+		int colonPos = keyValueString.find(":");
+		string keyString = keyValueString.substr(0, colonPos);
+		string valueString = keyValueString.substr(colonPos + 1, keyValueString.length());
+		//cout << "keyString: " << keyString;
+		//cout << "valueString: " << valueString;
+		pair <int, string> keyval;
+		keyval = make_pair((int)stoi(valueString), keyString);
+		freshMap.insert(keyval);
+	}
+	// Create outputstring using map  
+	while (getline(file, contentString, '*')) { 
+		// iterate through the large string that is the rest
+		string segment;
+		stringstream linestream(contentString);
+		vector<string> seglist;
+		while (getline(linestream, segment, '+')) {
+			stringVector.push_back(freshMap[(__int8)stoi(segment)]);
+		}
+	}
+
+	file.close();
+	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
+	for (int i = 0; i < 20; i++)
+		cout << stringVector[i] << "\n";
 
 }
 
+ 
+vector<string> DicCoder::splitIntoSubstrings(string str, char dl)
+{
+	string word = "";
+	// to count the number of split strings 
+	int num = 0;
+	// adding delimiter character at the end 
+	// of 'str' 
+	str = str + dl;
+	// length of 'str' 
+	int l = str.size();
+	// traversing 'str' from left to right 
+	vector<string> substr_list;
+	for (int i = 0; i < l; i++) {
+		// if str[i] is not equal to the delimiter 
+		// character then accumulate it to 'word' 
+		if (str[i] != dl)
+			word = word + str[i];
+		else {
+			// if 'word' is not an empty string, 
+			// then add this 'word' to the array 
+			// 'substr_list[]' 
+			if ((int)word.size() != 0)
+				substr_list.push_back(word);
+			// reset 'word' 
+			word = "";
+		}
+	}
+	// return the splitted strings 
+	return substr_list;
+}

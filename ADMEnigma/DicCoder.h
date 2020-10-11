@@ -19,10 +19,12 @@ public:
 	void encodeInt32(string fileName);
 	void encodeInt64(string fileName);
 	void decodeInt8(string fileName);
+	vector<string> splitIntoSubstrings(string str, char dl);
 	void decodeInt16(string fileName);
 	void decodeInt32(string fileName);
 	void decodeInt64(string fileName);
 	void encodeString(string fileName);
 	void decodeString(string fileName);
+ 
 };
 

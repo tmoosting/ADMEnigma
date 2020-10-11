@@ -80,7 +80,7 @@ float BinCoder::processArguments(string opType, string dataType, string fileName
 		}
 	} 
 	auto stop = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(stop - start); 
+	auto duration = duration_cast<milliseconds>(stop - start); 
 	return duration.count();
 }
 
