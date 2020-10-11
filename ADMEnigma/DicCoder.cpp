@@ -66,10 +66,8 @@ void DicCoder::encodeInt8(string fileName) {
 	// create map keys
 	for (size_t i = 0; i < vectorInt.size(); i++)
 	{
-		  pair <__int8, __int8> keyval = make_pair(vectorInt[i], intMap.size());
-
-		  intMap.insert(keyval);
-		 
+		  pair <__int8, __int8> keyval = make_pair(vectorInt[i], intMap.size()); 
+		  intMap.insert(keyval); 
 	} 
 	 // write dict  
 	for (const auto& p : intMap)

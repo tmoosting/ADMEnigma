@@ -166,6 +166,6 @@ l_tax-int64.dic,DE,DIC,INT64,11721,2019
 l_tax-int64.csv,EN,FOR,INT64,11721,3512
 l_tax-int64.for,DE,FOR,INT64,14325,1386
 l_tax-int64.csv,EN,DIF,INT64,11721,2480
-l_tax-int64.dif,DE,DIF,INT64,14325,1292l_tax-int64.csv,EN,RLE,INT64,11721,1954
-l_tax-int64.rle,DE,RLE,INT64,20840,7655
-l_tax-int64.rle,DE,RLE,INT64,20840,7694
+l_tax-int64.dif,DE,DIF,INT64,14325,1292
+l_comment-string.csv,EN,RLE,STRING,161131,6170
+l_comment-string.rle,DE,RLE,STRING,172852,13828
