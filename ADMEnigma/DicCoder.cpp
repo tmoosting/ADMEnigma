@@ -13,8 +13,9 @@ using namespace std;
 using namespace chrono;
  
 
-float DicCoder::processArguments(string opType, string dataType, string fileName)
+float DicCoder::processArguments(string opType, string dataType, string fileName, int givenOutputCount)
 {
+	outputCount = givenOutputCount;
 	auto start = high_resolution_clock::now();
 	if (opType == "EN") {
 		if (dataType == "STRING") {
@@ -250,10 +251,11 @@ void DicCoder::decodeInt8(string fileName)
 			intVector.push_back(freshMap[(__int8)stoi(segment)]);
 		} 
 	}
-  
+	if (outputCount == 0)
+		outputCount = intVector.size();
 	file.close();
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)intVector[i] << "\n";
 }
 
@@ -296,10 +298,11 @@ void DicCoder::decodeInt16(string fileName)
 			intVector.push_back(freshMap[(__int16)stoi(segment)]);
 		}
 	}
-
+	if (outputCount == 0)
+		outputCount = intVector.size();
 	file.close();
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)intVector[i] << "\n";
 }
 
@@ -339,10 +342,11 @@ void DicCoder::decodeInt32(string fileName)
 			intVector.push_back(freshMap[(__int32)stoi(segment)]);
 		}
 	}
-
+	if (outputCount == 0)
+		outputCount = intVector.size();
 	file.close();
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)intVector[i] << "\n";
 }
 
@@ -384,8 +388,10 @@ void DicCoder::decodeInt64(string fileName)
 	}
 
 	file.close();
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = intVector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)intVector[i] << "\n";
 }
 
@@ -470,8 +476,10 @@ void DicCoder::decodeString(string fileName) {
 	}
 
 	file.close();
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = stringVector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << stringVector[i] << "\n";
 
 }

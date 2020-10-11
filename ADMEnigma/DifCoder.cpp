@@ -11,8 +11,9 @@ using namespace std;
 using namespace chrono;
  
 
-float DifCoder::processArguments(string opType, string dataType, string fileName)
+float DifCoder::processArguments(string opType, string dataType, string fileName, int givenOutputCount)
 {
+	outputCount = givenOutputCount;
 	auto start = high_resolution_clock::now();
 	if (opType == "EN") {
 		if (dataType == "STRING") {
@@ -180,9 +181,10 @@ void DifCoder::decodeInt8(string fileName)
 		vectorInt[i] = vectorInt[i - 1] + vectorInt[i];  
 
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = vectorInt.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)vectorInt[i] << "\n";
 }
 void DifCoder::decodeInt16(string fileName)
@@ -198,9 +200,10 @@ void DifCoder::decodeInt16(string fileName)
 		vectorInt[i] = vectorInt[i - 1] + vectorInt[i];
 
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = vectorInt.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)vectorInt[i] << "\n";
 }
 
@@ -217,9 +220,10 @@ void DifCoder::decodeInt32(string fileName)
 		vectorInt[i] = vectorInt[i - 1] + vectorInt[i];
 
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = vectorInt.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)vectorInt[i] << "\n";
 }
 
@@ -236,44 +240,12 @@ void DifCoder::decodeInt64(string fileName)
 		vectorInt[i] = vectorInt[i - 1] + vectorInt[i];
 
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = vectorInt.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)vectorInt[i] << "\n";
 }
 
 
-
-void DifCoder::encodeString(string fileName) {
-	/*vector<string> vectorString = csvReader.readString(fileName);
-
-	string newFileName = fileName;
-
-	newFileName.erase(newFileName.length() - 4);
-	newFileName += ".bin";
-
-	ofstream file(newFileName, ios::binary);
-	int a = vectorString.size();
-	cout << a;
-	cout << vectorString[0];
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorString[0]), sizeof(string) * vectorString.size());
- */
-
-}
-void DifCoder::decodeString(string fileName) {
-	//vector<string> tester;
-
-	//ifstream file(fileName, ios::binary);
-	//int a;
-	//file.read(reinterpret_cast<char*>(&a), sizeof(a)); 
-	//tester.resize(a);
-	//file.read(reinterpret_cast<char*>(&tester[0]), sizeof(string) * tester.size());
-	// 
-	//cout << tester.size();
-	//cout << tester[0];
-	//cout << tester[1];
-	//cout << tester[2];
-
-}
-
+ 

@@ -11,9 +11,10 @@ using namespace std;
 
 class DifCoder
 {
+	int outputCount;
 public:
 	CSVReader csvReader;
-	float processArguments(string opType, string dataType, string fileName);
+	float processArguments(string opType, string dataType, string fileName, int givenOutputCount);
 	void encodeInt8(string fileName);
 	void encodeInt16(string fileName);
 	void encodeInt32(string fileName);

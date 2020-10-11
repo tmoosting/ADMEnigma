@@ -11,8 +11,9 @@ using namespace std;
 using namespace chrono;
 
 
-float RLECoder::processArguments(string opType, string dataType, string fileName)
+float RLECoder::processArguments(string opType, string dataType, string fileName, int givenOutputCount)
 {
+	outputCount = givenOutputCount;
 	auto start = high_resolution_clock::now();
 	if (opType == "EN") {
 		if (dataType == "STRING") {
@@ -207,9 +208,10 @@ void RLECoder::decodeInt8(string fileName)
 		} 
 	}
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = int8Vector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)int8Vector[i] << "\n";
 }
 void RLECoder::decodeInt16(string fileName)
@@ -233,9 +235,10 @@ void RLECoder::decodeInt16(string fileName)
 		}
 	}
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = int16Vector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)int16Vector[i] << "\n";
 }
 
@@ -260,9 +263,10 @@ void RLECoder::decodeInt32(string fileName)
 		}
 	}
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = int32Vector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)int32Vector[i] << "\n";
 }
 
@@ -287,9 +291,10 @@ void RLECoder::decodeInt64(string fileName)
 		}
 	}
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = int64Vector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)int64Vector[i] << "\n";
 }
 
@@ -361,9 +366,10 @@ void RLECoder::decodeString(string fileName) {
 
 	}
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = stringVector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout <<  stringVector[i] << "\n";
 }
 

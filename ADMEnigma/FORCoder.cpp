@@ -11,8 +11,9 @@ using namespace std;
 using namespace chrono;
  
 
-float FORCoder::processArguments(string opType, string dataType, string fileName)
+float FORCoder::processArguments(string opType, string dataType, string fileName, int givenOutputCount)
 {
+	outputCount = givenOutputCount;
 	auto start = high_resolution_clock::now();
 	if (opType == "EN") {
 		if (dataType == "STRING") {
@@ -200,9 +201,10 @@ void FORCoder::decodeInt8(string fileName)
 		element += median;
 	
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 1; i < 21; i++)
+	if (outputCount == 0)
+		outputCount = vectorInt.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 1; i < outputCount+1; i++)
 		cout << (int)vectorInt[i] << "\n";
 }
 void FORCoder::decodeInt16(string fileName)
@@ -223,9 +225,10 @@ void FORCoder::decodeInt16(string fileName)
 		element += median;
 
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 1; i < 21; i++)
+	if (outputCount == 0)
+		outputCount = vectorInt.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 1; i < outputCount+1; i++)
 		cout << (int)vectorInt[i] << "\n";
 }
 
@@ -247,9 +250,10 @@ void FORCoder::decodeInt32(string fileName)
 		element += median;
 
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 1; i < 21; i++)
+	if (outputCount == 0)
+		outputCount = vectorInt.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 1; i < outputCount+1; i++)
 		cout << (int)vectorInt[i] << "\n";
 }
 
@@ -271,44 +275,11 @@ void FORCoder::decodeInt64(string fileName)
 		element += median;
 
 	file.close();
-
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 1; i < 21; i++)
+	if (outputCount == 0)
+		outputCount = vectorInt.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 1; i < outputCount+1; i++)
 		cout << (int)vectorInt[i] << "\n";
 }
 
-
-
-void FORCoder::encodeString(string fileName) {
-	/*vector<string> vectorString = csvReader.readString(fileName);
-
-	string newFileName = fileName;
-
-	newFileName.erase(newFileName.length() - 4);
-	newFileName += ".bin";
-
-	ofstream file(newFileName, ios::binary);
-	int a = vectorString.size();
-	cout << a;
-	cout << vectorString[0];
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorString[0]), sizeof(string) * vectorString.size());
- */
-
-}
-void FORCoder::decodeString(string fileName) {
-	//vector<string> tester;
-
-	//ifstream file(fileName, ios::binary);
-	//int a;
-	//file.read(reinterpret_cast<char*>(&a), sizeof(a)); 
-	//tester.resize(a);
-	//file.read(reinterpret_cast<char*>(&tester[0]), sizeof(string) * tester.size());
-	// 
-	//cout << tester.size();
-	//cout << tester[0];
-	//cout << tester[1];
-	//cout << tester[2];
-
-}
-
+ 

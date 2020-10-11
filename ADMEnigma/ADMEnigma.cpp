@@ -25,6 +25,7 @@ void processArguments(int argc, char** argv);
 void writeOperationData(string opType, string compression, string dataType, string fileName, float operationTime);
 float getFileSize(string fileName);
 bool file_exists(string fileName);
+int outputCount = 20;
 
 // Make Object of each compression class
 BinCoder binCoder;
@@ -67,95 +68,40 @@ void processArguments(int argc, char** argv)
     float operationTime;
     //  if (compression != "BIN" && compression != "RLE" && compression != "DIC" && compression !=  "FOR" && compression != "DIF")
     if (compression == "BIN") {
-        operationTime =   binCoder.processArguments(operationType, dataType, fileName);
+        operationTime =   binCoder.processArguments(operationType, dataType, fileName, outputCount);
     }
     if (compression == "RLE") {
-        operationTime = rleCoder.processArguments(operationType, dataType, fileName);
+        operationTime = rleCoder.processArguments(operationType, dataType, fileName, outputCount);
     }
     if (compression == "DIC") {
-        operationTime = dicCoder.processArguments(operationType, dataType, fileName);
+        operationTime = dicCoder.processArguments(operationType, dataType, fileName, outputCount);
     }
     if (compression == "FOR") {
-        operationTime =  forCoder.processArguments(operationType, dataType, fileName);
+        operationTime =  forCoder.processArguments(operationType, dataType, fileName, outputCount);
     }
     if (compression == "DIF") {
-        operationTime = difCoder.processArguments(operationType, dataType, fileName);
+        operationTime = difCoder.processArguments(operationType, dataType, fileName, outputCount);
     }
     writeOperationData(operationType, compression, dataType, fileName, operationTime);
 }
-void writeOperationData(string opType, string compression, string dataType, string fileName, float operationTime) {
 
-    string outputString;
-  //  outputString += "Filename,Operation,Compression,DataType,Size,Time\n"; 
-    outputString += fileName;
-    outputString += ",";
-    outputString += opType;
-    outputString += ","; 
-    outputString += compression;
-    outputString += ",";
-    outputString += dataType;
-    outputString += ","; 
-
-    // filesize
-    string sizeCheckFileName = fileName;
-
-    if (opType == "DE") {
-        sizeCheckFileName.erase(sizeCheckFileName.length() - 4);
-        sizeCheckFileName += ".";
-        sizeCheckFileName += compression;
-    }
-  
-    string sizeString = to_string(getFileSize(sizeCheckFileName));
-    size_t pos1 = sizeString.find(".");
-    if (pos1 != std::string::npos)
-        sizeString.erase(pos1, sizeString.length());
-    outputString +=  sizeString;
-    outputString += ",";
-     
-    // timetaken
-    string timeString = to_string(operationTime); 
-    size_t pos2 = timeString.find(".");
-    if (pos2 != std::string::npos) 
-        timeString.erase(pos2, timeString.length()); 
-     
-    outputString +=  timeString;
-    outputString += "\n";
-
-    std::ofstream outfile;
-    outfile.open("OperationData.txt", std::ios_base::app);  
-    outfile << outputString; 
-    outfile.close();
-}
-
-float getFileSize(string fileName) {
-    // TODO fix  
-
-    ifstream testFile(fileName, ios::binary);
-    const auto begin = testFile.tellg();
-    testFile.seekg(0, ios::end);
-    const auto end = testFile.tellg();
-    const auto fsize = (end - begin); 
-    return fsize / 1024;
-
-  /*  cout << "checkin for filename " << fileName;
-    ifstream in_file(fileName, ios::binary);
-    in_file.seekg(0, ios::end);
-    float file_size = in_file.tellg();
-    return file_size;*/
-    
-}
 
 // Returns "valid" if all arguments are succesful, returns the problematic argument if not
 string validateArguments(int argc, char** argv)
 { 
+    // TODO: make global variable. Set outputCount to that if not 6. Apply to rest of scripts
+    string outputCountString;
     // validate amount of arguments
-    if (argc != 5)
-        return "Invalid count: # of arguments should be 4, not " +to_string (argc - 1);
+    if (argc == 6) { 
+        outputCount = stoi(argv[5]);
+    }         
+    else if (argc != 5)
+        return "Invalid count: # of arguments should be 4, not " + to_string(argc - 1);
 
     string operationType = argv[1];
     string compression = argv[2];
     string dataType = argv[3];
-    string fileName = argv[4];
+    string fileName = argv[4]; 
 
     // Make uppercase for easier comparison
     transform(operationType.begin(), operationType.end(), operationType.begin(), ::toupper);
@@ -185,7 +131,63 @@ string validateArguments(int argc, char** argv)
     return "VALID";
 }
 
- 
+void writeOperationData(string opType, string compression, string dataType, string fileName, float operationTime) {
+
+    string outputString;
+    //  outputString += "Filename,Operation,Compression,DataType,Size,Time\n"; 
+    outputString += fileName;
+    outputString += ",";
+    outputString += opType;
+    outputString += ",";
+    outputString += compression;
+    outputString += ",";
+    outputString += dataType;
+    outputString += ",";
+
+    // filesize
+    string sizeCheckFileName = fileName;
+
+    if (opType == "DE") {
+        sizeCheckFileName.erase(sizeCheckFileName.length() - 4);
+        sizeCheckFileName += ".";
+        sizeCheckFileName += compression;
+    }
+
+    string sizeString = to_string(getFileSize(sizeCheckFileName));
+    size_t pos1 = sizeString.find(".");
+    if (pos1 != std::string::npos)
+        sizeString.erase(pos1, sizeString.length());
+    outputString += sizeString;
+    outputString += ",";
+
+    // timetaken
+    string timeString = to_string(operationTime);
+    size_t pos2 = timeString.find(".");
+    if (pos2 != std::string::npos)
+        timeString.erase(pos2, timeString.length());
+
+    outputString += timeString;
+    outputString += "\n";
+
+    std::ofstream outfile;
+    outfile.open("OperationData.txt", std::ios_base::app);
+    outfile << outputString;
+    outfile.close();
+}
+
+float getFileSize(string fileName) {
+    // TODO fix  
+
+    ifstream testFile(fileName, ios::binary);
+    const auto begin = testFile.tellg();
+    testFile.seekg(0, ios::end);
+    const auto end = testFile.tellg();
+    const auto fsize = (end - begin);
+    return fsize / 1024;
+
+  
+
+}
 
  
 bool file_exists(string fileName)

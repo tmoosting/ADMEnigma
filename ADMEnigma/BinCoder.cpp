@@ -10,7 +10,7 @@
 using namespace std;
 using namespace chrono;
  
-  
+ 
 //float BinCoder::processArguments(string opType, string dataType, string fileName)
 //{
 //	if (opType == "EN") {
@@ -46,8 +46,9 @@ using namespace chrono;
 //	return 0;
 //}
 
-float BinCoder::processArguments(string opType, string dataType, string fileName)
+float BinCoder::processArguments(string opType, string dataType, string fileName, int givenOutputCount)
 {
+	outputCount = givenOutputCount;
 	auto start = high_resolution_clock::now();
 	if (opType == "EN") {
 		if (dataType == "STRING") {
@@ -169,10 +170,11 @@ void BinCoder::decodeInt8(string fileName)
 	int a;
 	file.read(reinterpret_cast<char*>(&a), sizeof(a));
 	int8Vector.resize(a);
-	file.read(reinterpret_cast<char*>(&int8Vector[0]), sizeof(__int8) * int8Vector.size());
-	 
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)	
+	file.read(reinterpret_cast<char*>(&int8Vector[0]), sizeof(__int8) * int8Vector.size()); 
+	if (outputCount == 0)
+		outputCount = int8Vector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first << outputCount << values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)int8Vector[i] << "\n";   
 }
 void BinCoder::decodeInt16(string fileName)
@@ -183,9 +185,10 @@ void BinCoder::decodeInt16(string fileName)
 	file.read(reinterpret_cast<char*>(&a), sizeof(a));
 	int16Vector.resize(a);
 	file.read(reinterpret_cast<char*>(&int16Vector[0]), sizeof(__int16) * int16Vector.size());
-	 
-	cout << "Decoding file: " << fileName << ", outputting the first 20 values:\n";
-	for (int i = 0; i < 20; i++)
+	if (outputCount == 0)
+		outputCount = int16Vector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
+	for (int i = 0; i < outputCount; i++)
 		cout << (int)int16Vector[i] << "\n";
 }
 
@@ -197,8 +200,9 @@ void BinCoder::decodeInt32(string fileName)
 	file.read(reinterpret_cast<char*>(&a), sizeof(a));
 	int32Vector.resize(a);
 	file.read(reinterpret_cast<char*>(&int32Vector[0]), sizeof(__int32) * int32Vector.size());
-
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
+	if (outputCount == 0)
+		outputCount = int32Vector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
 	for (int i = 0; i < 20; i++)
 		cout << (int)int32Vector[i] << "\n";
 }
@@ -211,45 +215,14 @@ void BinCoder::decodeInt64(string fileName)
 	file.read(reinterpret_cast<char*>(&a), sizeof(a));
 	int64Vector.resize(a);
 	file.read(reinterpret_cast<char*>(&int64Vector[0]), sizeof(__int64) * int64Vector.size());
-
-	cout << "Decoding file: " << fileName << ", outputting the first 10 values:\n";
+	if (outputCount == 0)
+		outputCount = int64Vector.size();
+	cout << "Decoding file: " << fileName << ", outputting the first " << outputCount << " values:\n";
 	for (int i = 0; i < 20; i++)
 		cout << (int)int64Vector[i] << "\n";
 }
 
 
-
-void BinCoder::encodeString(string fileName) {
-	/*vector<string> vectorString = csvReader.readString(fileName);
-
-	string newFileName = fileName;
-
-	newFileName.erase(newFileName.length() - 4);
-	newFileName += ".bin";
-
-	ofstream file(newFileName, ios::binary);
-	int a = vectorString.size();
-	cout << a;
-	cout << vectorString[0];
-	file.write(reinterpret_cast<const char*>(&a), sizeof(a));
-	file.write(reinterpret_cast<const char*>(&vectorString[0]), sizeof(string) * vectorString.size());
- */
-
-}
-void BinCoder::decodeString(string fileName) {
-	//vector<string> tester;
-
-	//ifstream file(fileName, ios::binary);
-	//int a;
-	//file.read(reinterpret_cast<char*>(&a), sizeof(a)); 
-	//tester.resize(a);
-	//file.read(reinterpret_cast<char*>(&tester[0]), sizeof(string) * tester.size());
-	// 
-	//cout << tester.size();
-	//cout << tester[0];
-	//cout << tester[1];
-	//cout << tester[2];
-
-}
+ 
 
  
