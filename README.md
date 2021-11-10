@@ -1,4 +1,4 @@
-## C++ Data Compression: ADMEnigma
+## ADMEnigma
 Assignment for Masters course: [Advanced Data Management for Data Analysis](https://studiegids.universiteitleiden.nl/courses/98778/advanced-data-management-for-data-analysis) at Leiden University
 
 A C++ console application that encodes and decodes several types of comma delimited datasets using five data encoding and decoding techniques.
