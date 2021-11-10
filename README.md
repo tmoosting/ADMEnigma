@@ -1,5 +1,7 @@
 ## ADMEnigma
-Based on an assignment for Masters course: [Advanced Data Management for Data Analysis](https://studiegids.universiteitleiden.nl/courses/98778/advanced-data-management-for-data-analysis) at Leiden University
+<sub>Based on an assignment for Masters course: [Advanced Data Management for Data Analysis](https://studiegids.universiteitleiden.nl/courses/98778/advanced-data-management-for-data-analysis) at Leiden University
+</sub>
+
 
 A C++ console application that encodes and decodes several types of comma delimited datasets using five data encoding and decoding techniques.
 Results are compared, across various data types, on compression and speed.
