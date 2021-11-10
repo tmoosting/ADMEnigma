@@ -23,12 +23,13 @@ These techniques are compared, for various int and string data types, on compres
   </ul>
   
 ### Compression Techniques 
+<ul>
 <li>“bin”: uncompressed binary format </li>
 <li>“rle”: run-length encoding</li>
 <li>“dic”: dictionary encoding</li></li>
 <li>“for”: frame of reference encoding</li>
 <li>“dif”: differential encoding</li>
-
+</ul>
 
 ### Instructions
 <ul>
