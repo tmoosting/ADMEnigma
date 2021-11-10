@@ -1,7 +1,7 @@
 ## C++ Data Compression: ADMEnigma
 Assignment for Masters course: [Advanced Data Management for Data Analysis](https://studiegids.universiteitleiden.nl/courses/98778/advanced-data-management-for-data-analysis) at Leiden University
 
-A C++ console application that employs a set of data encoding and decoding techniques, benchmarked on several types of comma delimited datasets.
+A C++ console application that employs five data encoding and decoding techniques, benchmarked on several types of comma delimited datasets.
 These techniques are compared, for various int and string data types, on compression and speed.
 
 
@@ -21,6 +21,14 @@ These techniques are compared, for various int and string data types, on compres
 <li>pysqlite3 0.4.3</li>
 <li>python-monetdb 11.19.3.2
   </ul>
+  
+### Compression Techniques 
+<li>“bin”: uncompressed binary format </li>
+<li>“rle”: run-length encoding</li>
+<li>“dic”: dictionary encoding</li></li>
+<li>“for”: frame of reference encoding</li>
+<li>“dif”: differential encoding</li>
+
 
 ### Instructions
 <ul>
