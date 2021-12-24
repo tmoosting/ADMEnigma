@@ -12,18 +12,7 @@ Results are compared, across various data types, on compression and speed.
 
 
 
-
-### Software
-<ul>
-<li>MonetDB v11.37.11</li>
-<li>SQLite v3.33.0</li>
-<li>DBeaver v7.2.0</li>
-<li>TPC-H v2.17.0</li>
-<li>Python v2.8</li>
-<li>pysqlite3 0.4.3</li>
-<li>python-monetdb 11.19.3.2
-  </ul>
-  
+ 
 ### Compression Techniques 
 <ul>
 <li>“bin”: uncompressed binary format </li>
